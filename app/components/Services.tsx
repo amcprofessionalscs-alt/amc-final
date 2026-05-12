@@ -23,13 +23,15 @@ export default function Services() {
         <div ref={ref} style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:1,background:"rgba(255,255,255,0.05)"}}>
           {services.map((s,i) => (
             <div key={s.id} style={{background:"#1a1a1a",padding:"3rem",opacity:inView?1:0,transition:`all 0.7s ${i*0.12}s`}}>
-              <div style={{fontFamily:"var(--font-display)",fontSize:"5rem",lineHeight:1,color:"rgba(255,255,255,0.05)",marginBottom:16}}>{s.id}</div>
+              <div style={{width:60,height:60,background:"rgba(59,130,246,0.1)",borderRadius:"8px",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:24,border:"1px solid rgba(59,130,246,0.2)"}}>
+                <div style={{fontFamily:"var(--font-mono)",fontSize:"1.5rem",color:"#3b82f6",fontWeight:700}}>{s.id}</div>
+              </div>
               <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.5rem",color:"#f8f8f8",marginBottom:16}}>{s.title}</h3>
               <p style={{color:"#a0a0a0",fontSize:"0.875rem",lineHeight:1.7,marginBottom:24,fontWeight:300}}>{s.desc}</p>
               <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:8}}>
                 {s.bullets.map(b => (
                   <li key={b} style={{display:"flex",alignItems:"center",gap:12,fontSize:"0.875rem",color:"#a0a0a0"}}>
-                    <span style={{width:6,height:6,borderRadius:"50%",background:"#3b82f6",flexShrink:0,display:"block"}} />{b}
+                    <span style={{width:6,height:6,borderRadius:"50%",background:"#3b82f6",flexShrink:0}} />{b}
                   </li>
                 ))}
               </ul>
