@@ -20,13 +20,13 @@ export default function About() {
             <div style={{position:"absolute",bottom:0,right:0,width:64,height:64,borderBottom:"2px solid #3b82f6",borderRight:"2px solid #3b82f6"}} />
           </div>
           <div style={{position:"absolute",bottom:-24,right:-24,background:"#000",border:"1px solid rgba(59,130,246,0.3)",padding:"1rem 1.5rem"}}>
-            <div style={{fontFamily:"var(--font-display)",fontSize:"3rem",color:"#f8f8f8",lineHeight:1}}>8+</div>
-            <div style={{fontFamily:"var(--font-mono)",fontSize:"0.7rem",color:"#a0a0a0",letterSpacing:"0.2em",textTransform:"uppercase"}}>Years Experience</div>
+            <div style={{fontFamily:"var(--font-display)",fontSize:"3rem",color:"#f8f8f8",lineHeight:1}}>6+</div>
+            <div style={{fontFamily:"var(--font-mono)",fontSize:"0.7rem",color:"#a0a0a0",letterSpacing:"0.2em",textTransform:"uppercase"}}>Years Since 2020</div>
           </div>
         </div>
         <div style={{opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(48px)",transition:"all 1s 0.3s"}}>
           <h2 style={{fontFamily:"var(--font-display)",fontSize:"clamp(2.5rem,5vw,4rem)",lineHeight:0.9,color:"#f8f8f8",marginBottom:"2rem"}}>PHOENIXS<br />COMMERCIAL<br /><span style={{color:"#3b82f6"}}>CLEANING PRO</span></h2>
-          <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:16,fontWeight:300}}>AMC Professionals LLC is a Phoenix-based commercial cleaning company founded by Demonte Williams. We specialize in serving contractors, property managers, and facility operators who need reliable, professional results on tight timelines.</p>
+          <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:16,fontWeight:300}}>AMC Professionals LLC is a Phoenix-based commercial cleaning company founded by Demonte Williams in 2020. We specialize in serving contractors, property managers, and facility operators who need reliable, professional results on tight timelines.</p>
           <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:40,fontWeight:300}}>From post-construction final cleans on retail tenant improvements to ongoing janitorial programs for medical offices and commercial buildings - we bring the same attention to detail to every project.</p>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:40}}>
             {capabilities.map((item,i) => (
