@@ -1,7 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
+
+const driveImg = (id: string) => `https://lh3.googleusercontent.com/d/${id}`
+const HEADSHOT = driveImg('1q2DAKWhGs4W7OLwvPIhcTCtDpXnMyP1u')
 
 export default function Hero() {
   const [loaded, setLoaded]           = useState(false)
@@ -71,38 +75,78 @@ export default function Hero() {
       {/* Bottom fade */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to bottom, transparent, var(--surface-1))', zIndex: 2 }} />
 
-      {/* Content */}
+      {/* Content — two-column: text left, photo right */}
       <motion.div
-        style={{ position: 'relative', zIndex: 10, maxWidth: 900, margin: '0 auto', padding: '8rem 1.5rem', textAlign: 'center', y: contentY }}
+        style={{
+          position: 'relative', zIndex: 10,
+          maxWidth: 1280, margin: '0 auto',
+          padding: '9rem 1.5rem 7rem',
+          display: 'grid',
+          gridTemplateColumns: '1fr 420px',
+          gap: '4rem',
+          alignItems: 'center',
+          y: contentY,
+        }}
       >
-        {/* Eyebrow */}
-        <motion.div {...stagger(0)} style={{ display: 'inline-flex', alignItems: 'center', gap: 14, marginBottom: 36 }}>
-          <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, var(--amber))' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--amber)', fontSize: '0.68rem', letterSpacing: '0.4em', textTransform: 'uppercase' }}>
-            Demonte Williams · @Monte_Motivated
-          </span>
-          <div style={{ height: 1, width: 48, background: 'linear-gradient(to left, transparent, var(--amber))' }} />
-        </motion.div>
+        {/* Left — text */}
+        <div>
+          <motion.div {...stagger(0)} style={{ display: 'inline-flex', alignItems: 'center', gap: 14, marginBottom: 32 }}>
+            <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, var(--amber))' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--amber)', fontSize: '0.68rem', letterSpacing: '0.4em', textTransform: 'uppercase' }}>
+              Demonte Williams · @Monte_Motivated
+            </span>
+          </motion.div>
 
-        {/* Headline */}
-        <motion.h1 {...stagger(0.1)} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 10vw, 7.5rem)', lineHeight: 0.92, color: '#f0f0f0', letterSpacing: '-0.03em', marginBottom: 28 }}>
-          THE OPERATING<br />
-          <span style={{ background: 'linear-gradient(135deg, var(--amber), #fcd34d, var(--cyan))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            SYSTEM
-          </span>
-          <br />
-          FOR THE RELENTLESS
-        </motion.h1>
+          <motion.h1 {...stagger(0.1)} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 8vw, 6.5rem)', lineHeight: 0.92, color: '#f0f0f0', letterSpacing: '-0.03em', marginBottom: 28 }}>
+            THE OPERATING<br />
+            <span style={{ background: 'linear-gradient(135deg, var(--amber), #fcd34d, var(--cyan))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              SYSTEM
+            </span>
+            <br />
+            FOR THE RELENTLESS
+          </motion.h1>
 
-        {/* Sub */}
-        <motion.p {...stagger(0.2)} style={{ fontFamily: 'var(--font-mono)', color: '#888', fontSize: 'clamp(0.85rem, 2vw, 1rem)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 3rem', letterSpacing: '0.01em' }}>
-          Stop improvising. The Next Step OS is a complete execution framework — AI-powered, systems-driven, built for entrepreneurs who refuse to ceiling out.
-        </motion.p>
+          <motion.p {...stagger(0.2)} style={{ fontFamily: 'var(--font-mono)', color: '#888', fontSize: 'clamp(0.85rem, 1.5vw, 1rem)', lineHeight: 1.7, maxWidth: 480, marginBottom: '2.5rem', letterSpacing: '0.01em' }}>
+            Stop improvising. The Next Step OS is a complete execution framework — AI-powered, systems-driven, built for entrepreneurs who refuse to ceiling out.
+          </motion.p>
 
-        {/* CTAs */}
-        <motion.div {...stagger(0.3)} style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="#pricing" className="btn-primary">Get the OS →</a>
-          <a href="/os" className="btn-outline">Open Dashboard</a>
+          <motion.div {...stagger(0.3)} style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <a href="#features" className="btn-primary">Get the OS →</a>
+            <a href="/os" className="btn-outline">Open Dashboard</a>
+          </motion.div>
+        </div>
+
+        {/* Right — headshot */}
+        <motion.div
+          {...stagger(0.15)}
+          style={{ position: 'relative' }}
+        >
+          <div style={{
+            position: 'relative',
+            aspectRatio: '3/4',
+            borderRadius: 20,
+            overflow: 'hidden',
+            border: '1px solid rgba(251,191,36,0.2)',
+          }}>
+            <Image
+              src={HEADSHOT}
+              alt="Demonte Williams"
+              fill
+              className="object-cover object-top"
+              unoptimized
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,15,0.7) 0%, transparent 60%)' }} />
+            <div style={{ position: 'absolute', bottom: '1.25rem', left: '1.25rem' }}>
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--amber)', letterSpacing: '0.05em' }}>Demonte Williams</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#666', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Founder · @Monte_Motivated</p>
+            </div>
+          </div>
+          {/* Amber glow behind photo */}
+          <div style={{
+            position: 'absolute', inset: '-20px', zIndex: -1,
+            background: 'radial-gradient(ellipse at center, rgba(251,191,36,0.08) 0%, transparent 70%)',
+            borderRadius: 30,
+          }} />
         </motion.div>
 
         {/* Stats row */}
