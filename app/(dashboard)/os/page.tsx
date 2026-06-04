@@ -34,6 +34,12 @@ export default function OsDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Bypass auth when Supabase is not configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      setUser({ id: 'dev', email: 'operator@nextstep.os' } as User)
+      setLoading(false)
+      return
+    }
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) {
@@ -46,9 +52,11 @@ export default function OsDashboard() {
   }, [router])
 
   const handleSignOut = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.replace('/login')
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+    }
+    router.replace('/')
   }
 
   if (loading) {

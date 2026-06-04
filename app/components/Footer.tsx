@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="glow-line-amber" />
 
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "4rem 1.5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "3rem", marginBottom: "3.5rem" }}>
+        <div className="rg-footer" style={{ marginBottom: "3.5rem" }}>
 
           {/* Brand */}
           <div>

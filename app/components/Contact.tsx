@@ -51,15 +51,8 @@ export default function Contact() {
     <section id="contact" style={{ background: "var(--surface-2)", padding: "8rem 0" }}>
       <div
         ref={ref}
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          padding: "0 1.5rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "5rem",
-          alignItems: "start",
-        }}
+        className="rg-2col"
+        style={{ maxWidth: 1280, margin: "0 auto", padding: "0 1.5rem" }}
       >
         {/* Left */}
         <div style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-40px)", transition: "all 0.9s" }}>

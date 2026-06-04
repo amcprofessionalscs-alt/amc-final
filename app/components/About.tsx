@@ -24,14 +24,12 @@ export default function About() {
     <section id="about" style={{ background: "var(--surface-1)", padding: "8rem 0" }}>
       <div
         ref={ref}
+        className="rg-2col-c"
         style={{
           maxWidth: 1280,
           margin: "0 auto",
           padding: "0 1.5rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
           gap: "6rem",
-          alignItems: "center",
         }}
       >
         {/* Left — jewel graphic + stat card */}

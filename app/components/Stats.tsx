@@ -22,12 +22,12 @@ export default function Stats() {
     <section style={{ background: "var(--surface-1)", padding: "0", position: "relative" }}>
       <div className="glow-line-amber" />
 
-      <div ref={ref} style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4,1fr)" }}>
+      <div ref={ref} className="rg-4col" style={{ maxWidth: 1280, margin: "0 auto" }}>
         {stats.map((s, i) => (
           <div
             key={i}
             style={{
-              padding: "3.5rem 2rem",
+              padding: "3rem 1.5rem",
               borderRight: i < 3 ? "1px solid var(--glass-border)" : "none",
               opacity: inView ? 1 : 0,
               transform: inView ? "translateY(0)" : "translateY(24px)",

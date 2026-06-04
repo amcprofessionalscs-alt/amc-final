@@ -56,12 +56,8 @@ export default function SummitGallery() {
         {/* Gallery grid */}
         <div
           ref={ref}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gridAutoRows: "240px",
-            gap: 8,
-          }}
+          className="rg-gallery"
+          style={{ gap: 8 }}
         >
           {PHOTOS.map((p, i) => (
             <div

@@ -75,7 +75,7 @@ export default function Services() {
         </div>
 
         {/* Grid */}
-        <div ref={ref} style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 1, background: "var(--glass-border)" }}>
+        <div ref={ref} className="rg-svc">
           {features.map((f, i) => (
             <div
               key={f.id}

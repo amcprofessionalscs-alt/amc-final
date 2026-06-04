@@ -77,14 +77,11 @@ export default function Hero() {
 
       {/* Content — two-column: text left, photo right */}
       <motion.div
+        className="rg-hero"
         style={{
           position: 'relative', zIndex: 10,
           maxWidth: 1280, margin: '0 auto',
           padding: '9rem 1.5rem 7rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr 420px',
-          gap: '4rem',
-          alignItems: 'center',
           y: contentY,
         }}
       >
@@ -119,6 +116,7 @@ export default function Hero() {
         {/* Right — headshot */}
         <motion.div
           {...stagger(0.15)}
+          className="hero-photo"
           style={{ position: 'relative' }}
         >
           <div style={{
