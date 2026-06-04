@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, supabaseConfigured } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 
 const ENERGY_LEVELS = ['💀', '😴', '😐', '⚡', '🔥']
@@ -21,15 +21,17 @@ export default function IgnitionCheckin({ user }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    const supabase = createClient()
-    await supabase.from('ignition_checkins').insert({
-      user_id: user?.id,
-      energy_level: energy,
-      focus_level: focus,
-      intention,
-      yesterday_win: win,
-      created_at: new Date().toISOString(),
-    })
+    if (supabaseConfigured()) {
+      const supabase = createClient()
+      await supabase.from('ignition_checkins').insert({
+        user_id: user?.id,
+        energy_level: energy,
+        focus_level: focus,
+        intention,
+        yesterday_win: win,
+        created_at: new Date().toISOString(),
+      })
+    }
     setDone(true)
     setSubmitting(false)
   }

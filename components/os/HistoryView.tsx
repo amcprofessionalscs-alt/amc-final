@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, supabaseConfigured } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 
 interface Checkin {
@@ -24,6 +24,10 @@ export default function HistoryView({ user }: Props) {
   const [loading, setLoading]   = useState(true)
 
   useEffect(() => {
+    if (!supabaseConfigured()) {
+      setLoading(false)
+      return
+    }
     if (!user?.id) return
     const supabase = createClient()
     supabase

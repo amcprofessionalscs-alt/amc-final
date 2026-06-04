@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, supabaseConfigured } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 
 const DEFAULT_HABITS = [
@@ -27,7 +27,7 @@ export default function HabitTracker({ user }: Props) {
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    if (!user?.id) return
+    if (!user?.id || !supabaseConfigured()) return
     const supabase = createClient()
     supabase
       .from('habit_logs')
@@ -47,13 +47,15 @@ export default function HabitTracker({ user }: Props) {
 
   const save = async () => {
     setSaving(true)
-    const supabase = createClient()
-    await supabase.from('habit_logs').upsert({
-      user_id: user?.id,
-      date: today,
-      habits,
-      score: habits.filter(h => h.done).length,
-    }, { onConflict: 'user_id,date' })
+    if (supabaseConfigured()) {
+      const supabase = createClient()
+      await supabase.from('habit_logs').upsert({
+        user_id: user?.id,
+        date: today,
+        habits,
+        score: habits.filter(h => h.done).length,
+      }, { onConflict: 'user_id,date' })
+    }
     setSaved(true)
     setSaving(false)
   }
