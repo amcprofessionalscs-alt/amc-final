@@ -1,44 +1,191 @@
-﻿"use client"
+"use client"
 import { useEffect, useRef, useState } from "react"
-const capabilities = ["Post-Construction Final Cleaning","Daily Janitorial Programs","Medical and Healthcare Facilities","Retail Tenant Improvements","Office Building Maintenance","Floor Care and Restoration","Emergency and One-Time Cleans","Contractor-Approved Vendor"]
+
+const principles = [
+  { label: "Execution Beats Inspiration", color: "var(--amber)" },
+  { label: "The Law of 1%",               color: "var(--amber)" },
+  { label: "AI Amplifies the Strategist", color: "var(--cyan)" },
+  { label: "The Margin Doctrine",         color: "var(--cyan)" },
+  { label: "Community is Infrastructure", color: "var(--amber)" },
+  { label: "Systems Create Freedom",      color: "var(--cyan)" },
+]
+
 export default function About() {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
+
   useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if(e.isIntersecting) setInView(true) }, {threshold:0.15})
-    if(ref.current) observer.observe(ref.current)
+    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.15 })
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
+
   return (
-    <section id="about" style={{background:"#0a0a0a",padding:"8rem 0"}}>
-      <div ref={ref} style={{maxWidth:1280,margin:"0 auto",padding:"0 1.5rem",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"5rem",alignItems:"center"}}>
-        <div style={{opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(-48px)",transition:"all 1s"}}>
-          <div style={{position:"relative",aspectRatio:"4/5",overflow:"hidden",background:"linear-gradient(135deg, #1a3a5a 0%, #2a4a7a 100%)",borderRadius:"8px"}}>
-            <img src="/images/about.jpg" alt="AMC" style={{width:"100%",height:"100%",objectFit:"cover",opacity:0.9}} />
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg, rgba(59,130,246,0.1) 0%, transparent 100%)"}} />
-            <div style={{position:"absolute",top:0,left:0,width:64,height:64,borderTop:"2px solid #3b82f6",borderLeft:"2px solid #3b82f6"}} />
-            <div style={{position:"absolute",bottom:0,right:0,width:64,height:64,borderBottom:"2px solid #3b82f6",borderRight:"2px solid #3b82f6"}} />
+    <section id="about" style={{ background: "var(--surface-1)", padding: "8rem 0" }}>
+      <div
+        ref={ref}
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "0 1.5rem",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "6rem",
+          alignItems: "center",
+        }}
+      >
+        {/* Left — jewel graphic + stat card */}
+        <div
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateX(0)" : "translateX(-40px)",
+            transition: "all 0.9s",
+          }}
+        >
+          {/* Main glass panel */}
+          <div
+            className="glass-amber"
+            style={{
+              padding: "3rem",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Background grid */}
+            <div className="grid-bg" style={{ position: "absolute", inset: 0, opacity: 0.8 }} />
+
+            {/* Content */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <div style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.6rem",
+                color: "var(--amber)",
+                letterSpacing: "0.4em",
+                textTransform: "uppercase",
+                marginBottom: "2rem",
+              }}>
+                Next Step Summit · Event Series
+              </div>
+
+              <blockquote style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.5rem,3vw,2.25rem)",
+                color: "#f0f0f0",
+                lineHeight: 1.15,
+                marginBottom: "2rem",
+                letterSpacing: "-0.01em",
+              }}>
+                &ldquo;This is not a conference.<br />
+                It&rsquo;s a conversation<br />
+                <span style={{ color: "var(--amber)" }}>at the table.&rdquo;</span>
+              </blockquote>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                {[
+                  { n: "71/71", l: "Tickets Sold · Summit 1" },
+                  { n: "$0", l: "In Paid Marketing" },
+                  { n: "9", l: "Speakers Confirmed for Next Event" },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "baseline", gap: "1rem" }}>
+                    <span style={{ fontFamily: "var(--font-display)", fontSize: "2rem", color: "var(--amber)", lineHeight: 1 }}>{s.n}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#555", letterSpacing: "0.1em", textTransform: "uppercase" }}>{s.l}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <div style={{position:"absolute",bottom:-24,right:-24,background:"#000",border:"1px solid rgba(59,130,246,0.3)",padding:"1rem 1.5rem"}}>
-            <div style={{fontFamily:"var(--font-display)",fontSize:"3rem",color:"#f8f8f8",lineHeight:1}}>6+</div>
-            <div style={{fontFamily:"var(--font-mono)",fontSize:"0.7rem",color:"#a0a0a0",letterSpacing:"0.2em",textTransform:"uppercase"}}>Years Since 2020</div>
+
+          {/* BMO tag */}
+          <div style={{
+            marginTop: "1rem",
+            background: "var(--glass-bg)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: 10,
+            padding: "0.875rem 1.25rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+          }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--cyan)", boxShadow: "0 0 8px var(--cyan)" }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "#666", letterSpacing: "0.12em" }}>
+              In partnership with BMO Bank Milwaukee
+            </span>
           </div>
         </div>
-        <div style={{opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(48px)",transition:"all 1s 0.3s"}}>
-          <h2 style={{fontFamily:"var(--font-display)",fontSize:"clamp(2.5rem,5vw,4rem)",lineHeight:0.9,color:"#f8f8f8",marginBottom:"2rem"}}>PHOENIXS<br />COMMERCIAL<br /><span style={{color:"#3b82f6"}}>CLEANING PRO</span></h2>
-          <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:16,fontWeight:300}}>AMC Professionals LLC is a Phoenix-based commercial cleaning company founded by Demonte Williams in 2020. We specialize in serving contractors, property managers, and facility operators who need reliable, professional results on tight timelines.</p>
-          <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:40,fontWeight:300}}>From post-construction final cleans on retail tenant improvements to ongoing janitorial programs for medical offices and commercial buildings - we bring the same attention to detail to every project.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:40}}>
-            {capabilities.map((item,i) => (
-              <div key={i} style={{display:"flex",alignItems:"center",gap:12,fontSize:"0.875rem",color:"#a0a0a0",opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(-16px)",transition:`all 0.5s ${0.4+i*0.06}s`}}>
-                <span style={{width:6,height:6,borderRadius:"50%",background:"#3b82f6",flexShrink:0}} />{item}
+
+        {/* Right — brand story */}
+        <div
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateX(0)" : "translateX(40px)",
+            transition: "all 0.9s 0.25s",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+            <div style={{ height: 1, width: 48, background: "linear-gradient(to right, transparent, var(--cyan))" }} />
+            <span style={{ fontFamily: "var(--font-mono)", color: "var(--cyan)", fontSize: "0.68rem", letterSpacing: "0.4em", textTransform: "uppercase" }}>
+              The Founder
+            </span>
+          </div>
+
+          <h2 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2.5rem,5vw,4rem)",
+            lineHeight: 0.92,
+            color: "#f0f0f0",
+            marginBottom: "2rem",
+            letterSpacing: "-0.02em",
+          }}>
+            DEMONTE<br />
+            <span style={{ color: "var(--amber)" }}>WILLIAMS</span>
+          </h2>
+
+          <p style={{ fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.75, marginBottom: "1.25rem", fontSize: "0.875rem", fontWeight: 300 }}>
+            Entrepreneur, public speaker, and systems strategist based in Phoenix, AZ with deep roots in Milwaukee, WI. Founder of Next Step OS — a complete business execution framework built for entrepreneurs who refuse to ceiling out.
+          </p>
+
+          <p style={{ fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.75, marginBottom: "2.5rem", fontSize: "0.875rem", fontWeight: 300 }}>
+            Co-producer of the Next Step Summit alongside Rashad Washington of ProPainter USA. The Summit sold 71/71 tickets with zero paid marketing. BMO Bank Milwaukee came on as a co-hosting partner after the first event.
+          </p>
+
+          {/* Principles */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: "2.5rem" }}>
+            {principles.map((p, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.8rem",
+                  color: "#888",
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? "translateX(0)" : "translateX(-12px)",
+                  transition: `all 0.5s ${0.4 + i * 0.07}s`,
+                }}
+              >
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: p.color, flexShrink: 0 }} />
+                {p.label}
               </div>
             ))}
           </div>
-          <div style={{border:"1px solid rgba(59,130,246,0.2)",background:"rgba(59,130,246,0.05)",padding:16,fontSize:"0.875rem",color:"#a0a0a0"}}>
-            <span style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontWeight:500}}>Insured and Compliant: </span>
-            COI, W9, and vendor onboarding documentation available on request.
-          </div>
+
+          <a
+            href="https://instagram.com/Monte_Motivated"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.72rem",
+              color: "var(--amber)",
+              textDecoration: "none",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+            }}
+          >
+            @Monte_Motivated →
+          </a>
         </div>
       </div>
     </section>

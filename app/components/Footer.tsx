@@ -1,46 +1,118 @@
-﻿export default function Footer() {
+export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer style={{background:"#000",borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-      <div style={{height:1,background:"linear-gradient(90deg,transparent,#3b82f6,transparent)",boxShadow:"0 0 20px rgba(59,130,246,0.4)"}} />
-      <div style={{maxWidth:1280,margin:"0 auto",padding:"4rem 1.5rem"}}>
-        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr",gap:"3rem",marginBottom:"4rem"}}>
+    <footer style={{ background: "var(--surface-1)", borderTop: "1px solid var(--glass-border)" }}>
+      <div className="glow-line-amber" />
+
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "4rem 1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "3rem", marginBottom: "3.5rem" }}>
+
+          {/* Brand */}
           <div>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
-              <img src="/images/logo.jpg" alt="AMC" style={{width:40,height:40,objectFit:"contain"}} />
-              <div>
-                <div style={{fontFamily:"var(--font-display)",letterSpacing:"0.2em",fontSize:"1.1rem",color:"#f8f8f8"}}>AMC PROFESSIONALS</div>
-                <div style={{fontSize:"0.55rem",color:"#a0a0a0",letterSpacing:"0.3em",textTransform:"uppercase"}}>Commercial Cleaning LLC</div>
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", color: "var(--amber)", letterSpacing: "0.15em", marginBottom: 4 }}>
+                NEXT STEP OS
+              </div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", color: "#444", letterSpacing: "0.3em", textTransform: "uppercase" }}>
+                by Demonte Williams · @Monte_Motivated
               </div>
             </div>
-            <p style={{color:"#a0a0a0",fontSize:"0.875rem",lineHeight:1.7,maxWidth:360,fontWeight:300}}>Phoenix metro trusted commercial cleaning partner for contractors, property managers, and facility operators. Licensed, insured, and contractor-approved.</p>
-            <div style={{display:"flex",gap:12,marginTop:24,alignItems:"center"}}>
-              <a href="tel:2514775676" style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",color:"#3b82f6",textDecoration:"none"}}>251-477-5676</a>
-              <span style={{color:"#a0a0a0"}}>·</span>
-              <a href="mailto:amcprofessionalscs@gmail.com" style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",color:"#a0a0a0",textDecoration:"none"}}>amcprofessionalscs@gmail.com</a>
+            <p style={{ fontFamily: "var(--font-mono)", color: "#444", fontSize: "0.8rem", lineHeight: 1.7, maxWidth: 320, fontWeight: 300 }}>
+              The operating system for entrepreneurs who refuse to improvise. AI-powered. Systems-driven. Built to break the ceiling.
+            </p>
+            <div style={{ display: "flex", gap: 16, marginTop: 20 }}>
+              <a href="mailto:amcprofessionalscs@gmail.com" style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "#555", textDecoration: "none" }}>
+                amcprofessionalscs@gmail.com
+              </a>
             </div>
           </div>
+
+          {/* Platform */}
           <div>
-            <h4 style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",letterSpacing:"0.2em",textTransform:"uppercase",color:"#f8f8f8",marginBottom:24}}>Services</h4>
-            <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {["Post-Construction Cleaning","Commercial Janitorial","Medical Facilities","Floor Care","Specialty Cleaning"].map(s => (
-                <a key={s} href="#services" style={{color:"#a0a0a0",fontSize:"0.875rem",textDecoration:"none"}}>{s}</a>
+            <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#f0f0f0", marginBottom: 20 }}>
+              Platform
+            </h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {[
+                ["/os", "Dashboard"],
+                ["/login", "Sign In"],
+                ["#features", "The OS"],
+                ["#about", "About"],
+              ].map(([href, label]) => (
+                <a key={href} href={href} style={{ fontFamily: "var(--font-mono)", color: "#444", fontSize: "0.8rem", textDecoration: "none" }}>
+                  {label}
+                </a>
               ))}
             </div>
           </div>
+
+          {/* Summit */}
           <div>
-            <h4 style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",letterSpacing:"0.2em",textTransform:"uppercase",color:"#f8f8f8",marginBottom:24}}>Service Area</h4>
-            <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {["Phoenix","Scottsdale","Tempe","Mesa","Chandler","Glendale"].map(c => (
-                <span key={c} style={{color:"#a0a0a0",fontSize:"0.875rem"}}>{c}, AZ</span>
+            <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#f0f0f0", marginBottom: 20 }}>
+              Summit
+            </h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {[
+                ["https://bit.ly/4d5KRHV", "Register"],
+                ["#contact", "Sponsorship"],
+                ["#contact", "Partnership"],
+              ].map(([href, label]) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  style={{ fontFamily: "var(--font-mono)", color: "#444", fontSize: "0.8rem", textDecoration: "none" }}
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Connect */}
+          <div>
+            <h4 style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#f0f0f0", marginBottom: 20 }}>
+              Connect
+            </h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {[
+                ["https://instagram.com/Monte_Motivated", "@Monte_Motivated"],
+                ["tel:2514775676", "251-477-5676"],
+              ].map(([href, label]) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  style={{ fontFamily: "var(--font-mono)", color: "#444", fontSize: "0.8rem", textDecoration: "none" }}
+                >
+                  {label}
+                </a>
               ))}
             </div>
           </div>
         </div>
-        <div style={{borderTop:"1px solid rgba(255,255,255,0.05)",paddingTop:32,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <p style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",color:"#a0a0a0"}}>2025 AMC Professionals LLC - All rights reserved</p>
-          <div style={{fontFamily:"var(--font-mono)",fontSize:"0.75rem",color:"#a0a0a0",display:"flex",gap:24}}>
-            <span>Licensed and Insured</span>
-            <span>Phoenix, AZ</span>
+
+        {/* Bottom bar */}
+        <div style={{
+          borderTop: "1px solid var(--glass-border)",
+          paddingTop: "2rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}>
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "#333" }}>
+            © {year} Next Step OS · Demonte Williams. All rights reserved.
+          </p>
+          <div style={{ display: "flex", gap: 24 }}>
+            <a href="/terms" style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "#333", textDecoration: "none" }}>
+              Terms of Use
+            </a>
+            <a href="/terms#payment" style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "#333", textDecoration: "none" }}>
+              Payment Terms
+            </a>
           </div>
         </div>
       </div>

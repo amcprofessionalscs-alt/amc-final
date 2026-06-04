@@ -1,19 +1,25 @@
-﻿"use client"
+"use client"
 import { useState, useRef, useEffect } from "react"
+
+const interests = [
+  "Monte OS Playbook",
+  "Implementation Partnership",
+  "Next Step Summit",
+  "Summit Sponsorship",
+  "Other",
+]
 
 export default function Contact() {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
-  const [formState, setFormState] = useState({
-    name: "", company: "", phone: "", email: "", service: "", message: "",
-  })
+  const [formState, setFormState] = useState({ name: "", email: "", interest: "", message: "" })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if(e.isIntersecting) setInView(true) }, {threshold:0.1})
-    if(ref.current) observer.observe(ref.current)
+    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.1 })
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
 
@@ -25,76 +31,149 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
     setError("")
-
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formState),
+        body: JSON.stringify({ ...formState, service: formState.interest }),
       })
-
       if (!response.ok) throw new Error("Submission failed")
       setSubmitted(true)
-      setFormState({ name: "", company: "", phone: "", email: "", service: "", message: "" })
-      setTimeout(() => setSubmitted(false), 5000)
-    } catch (err) {
-      setError("Error submitting form. Please try again or call us directly.")
-      console.error(err)
+      setFormState({ name: "", email: "", interest: "", message: "" })
+    } catch {
+      setError("Something went wrong. Email us at amcprofessionalscs@gmail.com")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <section id="contact" style={{background:"#0a0a0a",padding:"8rem 0"}}>
-      <div ref={ref} style={{maxWidth:1280,margin:"0 auto",padding:"0 1.5rem",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"5rem",alignItems:"start"}}>
-        <div style={{opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(-48px)",transition:"all 1s"}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:12,marginBottom:32}}>
-            <span style={{height:1,width:48,background:"#3b82f6"}} />
-            <span style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontSize:"0.75rem",letterSpacing:"0.4em",textTransform:"uppercase"}}>Get In Touch</span>
+    <section id="contact" style={{ background: "var(--surface-2)", padding: "8rem 0" }}>
+      <div
+        ref={ref}
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "0 1.5rem",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "5rem",
+          alignItems: "start",
+        }}
+      >
+        {/* Left */}
+        <div style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-40px)", transition: "all 0.9s" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+            <div style={{ height: 1, width: 48, background: "linear-gradient(to right, transparent, var(--amber))" }} />
+            <span style={{ fontFamily: "var(--font-mono)", color: "var(--amber)", fontSize: "0.68rem", letterSpacing: "0.4em", textTransform: "uppercase" }}>
+              Get In Touch
+            </span>
           </div>
-          <h2 style={{fontFamily:"var(--font-display)",fontSize:"clamp(2.5rem,5vw,4.5rem)",lineHeight:0.9,color:"#f8f8f8",marginBottom:"2rem"}}>READY TO<br /><span style={{color:"#3b82f6"}}>GET STARTED?</span></h2>
-          <p style={{color:"#a0a0a0",lineHeight:1.8,marginBottom:32,fontWeight:300}}>Request a free quote for your project. We respond within 48 hours and can mobilize quickly to meet your construction or facility timeline.</p>
-          <div style={{display:"flex",flexDirection:"column",gap:24}}>
-            <div>
-              <div style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontSize:"0.7rem",letterSpacing:"0.2em",textTransform:"uppercase",marginBottom:8}}>Call or Text</div>
-              <a href="tel:2514775676" style={{color:"#f8f8f8",fontSize:"1.5rem",fontFamily:"var(--font-display)",textDecoration:"none"}}>251-477-5676</a>
-            </div>
-            <div>
-              <div style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontSize:"0.7rem",letterSpacing:"0.2em",textTransform:"uppercase",marginBottom:8}}>Email</div>
-              <a href="mailto:amcprofessionalscs@gmail.com" style={{color:"#f8f8f8",fontSize:"1.1rem",textDecoration:"none"}}>amcprofessionalscs@gmail.com</a>
-            </div>
-            <div>
-              <div style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontSize:"0.7rem",letterSpacing:"0.2em",textTransform:"uppercase",marginBottom:8}}>Service Area</div>
-              <p style={{color:"#a0a0a0",fontSize:"1rem"}}>Phoenix Metro and surrounding areas. We also service other Arizona regions - ask about availability.</p>
-            </div>
+
+          <h2 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2.5rem,5vw,4.5rem)",
+            lineHeight: 0.92,
+            color: "#f0f0f0",
+            marginBottom: "1.75rem",
+            letterSpacing: "-0.02em",
+          }}>
+            START THE<br />
+            <span style={{ color: "var(--amber)" }}>CONVERSATION</span>
+          </h2>
+
+          <p style={{ fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.75, marginBottom: "2.5rem", fontSize: "0.875rem", fontWeight: 300 }}>
+            Interested in the OS, the Summit, a partnership, or sponsorship? Tell us where you are and what you&rsquo;re building.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {[
+              { label: "Email", value: "amcprofessionalscs@gmail.com", href: "mailto:amcprofessionalscs@gmail.com" },
+              { label: "Phone", value: "251-477-5676", href: "tel:2514775676" },
+              { label: "Instagram", value: "@Monte_Motivated", href: "https://instagram.com/Monte_Motivated" },
+            ].map(c => (
+              <div key={c.label}>
+                <div style={{ fontFamily: "var(--font-mono)", color: "var(--amber)", fontSize: "0.62rem", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 6 }}>
+                  {c.label}
+                </div>
+                <a
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  style={{ fontFamily: "var(--font-mono)", color: "#d0d0d0", fontSize: "0.925rem", textDecoration: "none" }}
+                >
+                  {c.value}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div style={{opacity:inView?1:0,transform:inView?"translateX(0)":"translateX(48px)",transition:"all 1s 0.3s"}}>
+        {/* Right — form */}
+        <div style={{ opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(40px)", transition: "all 0.9s 0.25s" }}>
           {submitted ? (
-            <div style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.3)",padding:"2rem",borderRadius:"8px",textAlign:"center"}}>
-              <div style={{fontSize:"3rem",marginBottom:16}}>✓</div>
-              <h3 style={{color:"#f8f8f8",marginBottom:8}}>Thank You!</h3>
-              <p style={{color:"#a0a0a0"}}>We received your request and will contact you within 48 hours.</p>
+            <div
+              className="glass-amber"
+              style={{ padding: "3rem", textAlign: "center" }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚡</div>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.75rem", color: "var(--amber)", marginBottom: "0.75rem" }}>
+                WE GOT YOU
+              </h3>
+              <p style={{ fontFamily: "var(--font-mono)", color: "#666", fontSize: "0.825rem", lineHeight: 1.6 }}>
+                Expect a response within 24 hours.
+              </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:16}}>
-              <input type="text" name="name" placeholder="Your Name" value={formState.name} onChange={handleChange} required style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem"}} />
-              <input type="text" name="company" placeholder="Company" value={formState.company} onChange={handleChange} style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem"}} />
-              <input type="email" name="email" placeholder="Email Address" value={formState.email} onChange={handleChange} required style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem"}} />
-              <input type="tel" name="phone" placeholder="Phone Number" value={formState.phone} onChange={handleChange} required style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem"}} />
-              <select name="service" value={formState.service} onChange={handleChange} required style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem"}}>
-                <option value="">Select a Service</option>
-                <option value="Post-Construction Cleaning">Post-Construction Cleaning</option>
-                <option value="Commercial Janitorial">Commercial Janitorial</option>
-                <option value="Medical Facility Cleaning">Medical Facility Cleaning</option>
-                <option value="Specialty Cleaning">Specialty Cleaning</option>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={formState.name}
+                onChange={handleChange}
+                required
+                className="os-input"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formState.email}
+                onChange={handleChange}
+                required
+                className="os-input"
+              />
+              <select
+                name="interest"
+                value={formState.interest}
+                onChange={handleChange}
+                required
+                className="os-input"
+                style={{ cursor: "pointer" }}
+              >
+                <option value="">What are you interested in?</option>
+                {interests.map(i => <option key={i} value={i}>{i}</option>)}
               </select>
-              <textarea name="message" placeholder="Tell us about your project..." value={formState.message} onChange={handleChange} required style={{background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.1)",color:"#f8f8f8",padding:"0.75rem 1rem",borderRadius:"4px",fontSize:"0.875rem",minHeight:"120px",fontFamily:"inherit"}} />
-              {error && <div style={{color:"#ef4444",fontSize:"0.875rem"}}>{error}</div>}
-              <button type="submit" disabled={loading} style={{background:"#3b82f6",color:"white",padding:"0.875rem 2rem",borderRadius:"4px",border:"none",fontFamily:"var(--font-mono)",fontSize:"0.8rem",letterSpacing:"0.1em",textTransform:"uppercase",cursor:"pointer",opacity:loading?0.6:1}}>
-                {loading ? "Sending..." : "Send Request"}
+              <textarea
+                name="message"
+                placeholder="Tell us what you're building and what you need..."
+                value={formState.message}
+                onChange={handleChange}
+                required
+                className="os-input"
+                style={{ minHeight: 120, resize: "none" }}
+              />
+              {error && (
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--pink)" }}>{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary"
+                style={{ justifyContent: "center", opacity: loading ? 0.6 : 1 }}
+              >
+                {loading ? "Sending..." : "Submit →"}
               </button>
             </form>
           )}
