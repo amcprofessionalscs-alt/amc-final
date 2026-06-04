@@ -1,29 +1,129 @@
-﻿"use client"
-import { useState, useEffect } from "react"
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+
 export default function Hero() {
-  const [loaded, setLoaded] = useState(false)
-  useEffect(() => { setTimeout(() => setLoaded(true), 300) }, [])
+  const [loaded, setLoaded]           = useState(false)
+  const [videoReady, setVideoReady]   = useState(false)
+  const [videoError, setVideoError]   = useState(false)
+  const [prefersReduced, setPrefersReduced] = useState(false)
+  const sectionRef  = useRef<HTMLElement>(null)
+  const videoRef    = useRef<HTMLVideoElement>(null)
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 80])
+  const videoOp  = useTransform(scrollYProgress, [0, 0.6], [0.7, 0])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReduced(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches)
+    mq.addEventListener('change', handler)
+    setTimeout(() => setLoaded(true), 200)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  useEffect(() => {
+    if (prefersReduced && videoRef.current) videoRef.current.pause()
+  }, [prefersReduced])
+
+  const stagger = (delay: number) => ({
+    initial: { opacity: 0, y: 28 },
+    animate: { opacity: loaded ? 1 : 0, y: loaded ? 0 : 28 },
+    transition: { duration: 0.9, delay },
+  })
+
   return (
-    <section id="hero" style={{position:"relative",minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"linear-gradient(135deg, #0a0a0a 0%, #1a2a4a 50%, #0a0a0a 100%)"}}>
-      <div style={{position:"absolute",inset:0,background:"radial-gradient(circle at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(59,130,246,0.05) 0%, transparent 50%)",pointerEvents:"none"}} />
-      <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,background:"linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.3) 100%)",zIndex:1}} />
-      <div style={{position:"relative",zIndex:10,maxWidth:1280,margin:"0 auto",padding:"8rem 1.5rem",textAlign:"center"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:12,marginBottom:32,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"all 1s"}}>
-          <span style={{height:1,width:48,background:"#3b82f6"}} />
-          <span style={{fontFamily:"var(--font-mono)",color:"#3b82f6",fontSize:"0.75rem",letterSpacing:"0.4em",textTransform:"uppercase"}}>Phoenix Metro</span>
-          <span style={{height:1,width:48,background:"#3b82f6"}} />
-        </div>
-        <h1 style={{fontFamily:"var(--font-display)",fontSize:"clamp(3.5rem,12vw,10rem)",lineHeight:0.88,color:"#f8f8f8",opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(32px)",transition:"all 1s 0.2s"}}>
-          BUILT CLEAN.<br /><span style={{background:"linear-gradient(135deg,#60a5fa,#3b82f6)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>FINISHED RIGHT.</span>
-        </h1>
-        <p style={{marginTop:32,maxWidth:600,margin:"2rem auto 0",color:"#a0a0a0",fontSize:"1.125rem",lineHeight:1.7,fontWeight:300,opacity:loaded?1:0,transition:"all 1s 0.4s"}}>
-          Commercial cleaning specialists for contractors, retail, medical, and office facilities across the Phoenix metro area. From post-construction to daily janitorial - we deliver spaces ready for occupancy.
-        </p>
-        <div style={{marginTop:48,display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",opacity:loaded?1:0,transition:"all 1s 0.6s"}}>
-          <a href="#contact" className="btn-primary">Get a Free Quote</a>
-          <a href="#projects" className="btn-outline">View Our Work</a>
-        </div>
-      </div>
+    <section
+      ref={sectionRef}
+      id="hero"
+      style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+    >
+      {/* CSS fallback — always renders, sits below video */}
+      <div className="hero-fallback" />
+
+      {/* Seedance video — renders only when available */}
+      {!videoError && !prefersReduced && (
+        <motion.video
+          ref={videoRef}
+          className="video-bg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ opacity: videoOp }}
+          onCanPlay={() => setVideoReady(true)}
+          onError={() => setVideoError(true)}
+        >
+          <source src="/videos/hero-loop.mp4" type="video/mp4" />
+        </motion.video>
+      )}
+
+      {/* Glassmorphism overlay — on top of video */}
+      {videoReady && !videoError && !prefersReduced && (
+        <div className="video-glass-overlay" />
+      )}
+
+      {/* Grid texture */}
+      <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
+
+      {/* Bottom fade */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to bottom, transparent, var(--surface-1))', zIndex: 2 }} />
+
+      {/* Content */}
+      <motion.div
+        style={{ position: 'relative', zIndex: 10, maxWidth: 900, margin: '0 auto', padding: '8rem 1.5rem', textAlign: 'center', y: contentY }}
+      >
+        {/* Eyebrow */}
+        <motion.div {...stagger(0)} style={{ display: 'inline-flex', alignItems: 'center', gap: 14, marginBottom: 36 }}>
+          <div style={{ height: 1, width: 48, background: 'linear-gradient(to right, transparent, var(--amber))' }} />
+          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--amber)', fontSize: '0.68rem', letterSpacing: '0.4em', textTransform: 'uppercase' }}>
+            Demonte Williams · @Monte_Motivated
+          </span>
+          <div style={{ height: 1, width: 48, background: 'linear-gradient(to left, transparent, var(--amber))' }} />
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1 {...stagger(0.1)} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 10vw, 7.5rem)', lineHeight: 0.92, color: '#f0f0f0', letterSpacing: '-0.03em', marginBottom: 28 }}>
+          THE OPERATING<br />
+          <span style={{ background: 'linear-gradient(135deg, var(--amber), #fcd34d, var(--cyan))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            SYSTEM
+          </span>
+          <br />
+          FOR THE RELENTLESS
+        </motion.h1>
+
+        {/* Sub */}
+        <motion.p {...stagger(0.2)} style={{ fontFamily: 'var(--font-mono)', color: '#888', fontSize: 'clamp(0.85rem, 2vw, 1rem)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 3rem', letterSpacing: '0.01em' }}>
+          Stop improvising. The Next Step OS is a complete execution framework — AI-powered, systems-driven, built for entrepreneurs who refuse to ceiling out.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div {...stagger(0.3)} style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a href="#pricing" className="btn-primary">Get the OS →</a>
+          <a href="/os" className="btn-outline">Open Dashboard</a>
+        </motion.div>
+
+        {/* Stats row */}
+        <motion.div {...stagger(0.4)} style={{ marginTop: 64, display: 'flex', gap: 0, justifyContent: 'center', borderTop: '1px solid var(--glass-border)', borderBottom: '1px solid var(--glass-border)', padding: '1.5rem 0' }}>
+          {[
+            { n: '71/71', l: 'Summit Tickets Sold' },
+            { n: '$0', l: 'Paid Marketing' },
+            { n: '80K+', l: 'Ecosystem Reach' },
+            { n: '100%', l: 'Room Retention' },
+          ].map((s, i) => (
+            <div key={i} style={{ flex: 1, textAlign: 'center', padding: '0 1rem', borderRight: i < 3 ? '1px solid var(--glass-border)' : 'none' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.4rem, 3vw, 2rem)', color: 'var(--amber)', lineHeight: 1 }}>
+                {s.n}
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#555', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 6 }}>
+                {s.l}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

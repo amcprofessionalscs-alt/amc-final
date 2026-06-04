@@ -22,7 +22,7 @@ export default function Projects() {
         </div>
         <div ref={ref} style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:24}}>
           {projects.map((p,i) => (
-            <div key={p.id} style={{opacity:inView?1:0,transform:inView?"translateY(0)":"translateY(32px)",transition:`all 0.6s ${i*0.15}s`,background:"#1a1a1a",borderRadius:"8px",overflow:"hidden",cursor:"pointer",transition:"all 0.3s"}}>
+            <div key={p.id} style={{opacity:inView?1:0,transform:inView?"translateY(0)":"translateY(32px)",transition:`all 0.6s ${i*0.15}s`,background:"#1a1a1a",borderRadius:"8px",overflow:"hidden",cursor:"pointer"}}>
               <div style={{position:"relative",height:280,background:"linear-gradient(135deg, #1a3a5a 0%, #2a4a7a 100%)",overflow:"hidden"}}>
                 <img src={p.image} alt={p.title} style={{width:"100%",height:"100%",objectFit:"cover",opacity:0.85}} />
                 <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.7) 100%)"}} />
