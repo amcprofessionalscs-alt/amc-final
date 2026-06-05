@@ -14,6 +14,7 @@ export default function Navbar() {
   const links: [string, string][] = [
     ["#features", "The OS"],
     ["#about", "About"],
+    ["/audit", "OS Audit"],
     ["#contact", "Contact"],
   ]
 
