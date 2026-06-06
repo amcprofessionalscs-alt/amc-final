@@ -286,8 +286,40 @@ export default function AuditPage() {
         <div className="glow-line-amber" />
       </section>
 
+      {/* ── VIDEO ────────────────────────────────────────────── */}
+      <section style={{ background: 'var(--surface-1)', paddingTop: '7rem' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto 3rem', padding: '0 1.5rem' }}>
+          <div style={{
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            borderRadius: 16,
+            overflow: 'hidden',
+            background: '#0a0f1e',
+            boxShadow: '0 0 40px rgba(59, 130, 246, 0.08)',
+            position: 'relative',
+            paddingTop: '56.25%',
+          }}>
+            <iframe
+              src="https://drive.google.com/file/d/1vXLdebjRRNrQw-JT8MnMwilFssIeYEVi/preview"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+              allow="autoplay"
+              allowFullScreen
+            />
+          </div>
+          <p style={{
+            textAlign: 'center',
+            fontSize: 13,
+            color: 'rgba(255,255,255,0.4)',
+            marginTop: 12,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+          }}>
+            Demonte Williams · Founder, Next Step OS
+          </p>
+        </div>
+      </section>
+
       {/* ── PAYMENT + FORM ───────────────────────────────────── */}
-      <section id="payment" style={{ background: 'var(--surface-1)', padding: '7rem 0' }}>
+      <section id="payment" style={{ background: 'var(--surface-1)', padding: '0 0 7rem' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem' }}>
 
           {/* Header */}
