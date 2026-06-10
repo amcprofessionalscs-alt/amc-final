@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -52,13 +54,8 @@ const PROOF_STATS = [
 const STEPS = [
   {
     n: '01',
-    title: 'Send $197 via Zelle',
-    detail: (
-      <>
-        Zelle to: <strong style={{ color: 'var(--amber)' }}>251-477-5676</strong> (Demonte Williams)
-        <br />Include <strong style={{ color: 'var(--amber)' }}>&ldquo;OS Audit&rdquo;</strong> in the memo.
-      </>
-    ),
+    title: 'Pay $197 securely via Stripe',
+    detail: 'Click the button below to pay by card. Secure checkout powered by Stripe — takes less than a minute.',
   },
   {
     n: '02',
@@ -72,18 +69,43 @@ const STEPS = [
   },
 ]
 
-export default function AuditPage() {
+function AuditPageInner() {
+  const searchParams = useSearchParams()
+  const paymentSuccess = searchParams.get('payment') === 'success'
+
   const [formState, setFormState] = useState({
-    name: '', email: '', bizType: '', challenge: '', paid: '',
+    name: '', email: '', bizType: '', challenge: '', paid: paymentSuccess ? 'Yes' : '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [inView, setInView] = useState(false)
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
   const proofRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.2 })
     if (proofRef.current) obs.observe(proofRef.current)
     return () => obs.disconnect()
+  }, [])
+
+  const handleStripeCheckout = useCallback(async () => {
+    setCheckoutLoading(true)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product: 'audit' }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert('Checkout unavailable. Contact amcprofessionalscs@gmail.com')
+      }
+    } catch {
+      alert('Checkout unavailable. Contact amcprofessionalscs@gmail.com')
+    } finally {
+      setCheckoutLoading(false)
+    }
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -336,32 +358,64 @@ export default function AuditPage() {
             </h2>
           </div>
 
+          {/* Payment success banner */}
+          {paymentSuccess && (
+            <div style={{
+              padding: '1.25rem 1.5rem',
+              background: 'rgba(6,182,212,0.08)',
+              border: '1px solid rgba(6,182,212,0.3)',
+              borderRadius: 12,
+              marginBottom: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+            }}>
+              <span style={{ fontSize: '1.1rem' }}>✓</span>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.825rem', color: 'var(--cyan)' }}>
+                Payment received. Now fill out the form below so we can get started.
+              </p>
+            </div>
+          )}
+
           {/* Steps */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3.5rem' }}>
             {STEPS.map((step, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'flex-start', gap: '1.5rem',
-                padding: '2rem',
-                background: 'var(--glass-bg)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: 14,
-              }}>
+              <div key={i}>
                 <div style={{
-                  width: 44, height: 44, flexShrink: 0,
-                  background: 'rgba(251,191,36,0.08)',
-                  border: '1px solid rgba(251,191,36,0.25)',
-                  borderRadius: 10,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  display: 'flex', alignItems: 'flex-start', gap: '1.5rem',
+                  padding: '2rem',
+                  background: 'var(--glass-bg)',
+                  border: i === 0 ? '1px solid rgba(251,191,36,0.25)' : '1px solid var(--glass-border)',
+                  borderRadius: 14,
                 }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', color: 'var(--amber)' }}>{step.n}</span>
-                </div>
-                <div>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.35rem', color: '#f0f0f0', marginBottom: 8, letterSpacing: '-0.01em' }}>
-                    {step.title}
-                  </h3>
-                  <p style={{ fontFamily: 'var(--font-mono)', color: '#777', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300 }}>
-                    {step.detail}
-                  </p>
+                  <div style={{
+                    width: 44, height: 44, flexShrink: 0,
+                    background: 'rgba(251,191,36,0.08)',
+                    border: '1px solid rgba(251,191,36,0.25)',
+                    borderRadius: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', color: 'var(--amber)' }}>{step.n}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.35rem', color: '#f0f0f0', marginBottom: 8, letterSpacing: '-0.01em' }}>
+                      {step.title}
+                    </h3>
+                    <p style={{ fontFamily: 'var(--font-mono)', color: '#777', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300 }}>
+                      {step.detail}
+                    </p>
+                    {/* Stripe button inline with Step 1 */}
+                    {i === 0 && (
+                      <button
+                        onClick={handleStripeCheckout}
+                        disabled={checkoutLoading}
+                        className="btn-primary"
+                        style={{ marginTop: '1.25rem', opacity: checkoutLoading ? 0.6 : 1 }}
+                      >
+                        {checkoutLoading ? 'Redirecting...' : 'Pay $197 — Secure Checkout →'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -493,5 +547,13 @@ export default function AuditPage() {
 
       <Footer />
     </main>
+  )
+}
+
+export default function AuditPage() {
+  return (
+    <Suspense fallback={null}>
+      <AuditPageInner />
+    </Suspense>
   )
 }
