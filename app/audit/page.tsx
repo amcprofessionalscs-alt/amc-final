@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Navbar from '../components/Navbar'
@@ -78,7 +78,6 @@ function AuditPageInner() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [inView, setInView] = useState(false)
-  const [checkoutLoading, setCheckoutLoading] = useState(false)
   const proofRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -87,26 +86,6 @@ function AuditPageInner() {
     return () => obs.disconnect()
   }, [])
 
-  const handleStripeCheckout = useCallback(async () => {
-    setCheckoutLoading(true)
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: 'audit' }),
-      })
-      const data = await res.json()
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        alert('Checkout unavailable. Contact amcprofessionalscs@gmail.com')
-      }
-    } catch {
-      alert('Checkout unavailable. Contact amcprofessionalscs@gmail.com')
-    } finally {
-      setCheckoutLoading(false)
-    }
-  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormState(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -404,16 +383,17 @@ function AuditPageInner() {
                     <p style={{ fontFamily: 'var(--font-mono)', color: '#777', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300 }}>
                       {step.detail}
                     </p>
-                    {/* Stripe button inline with Step 1 */}
+                    {/* Stripe payment link */}
                     {i === 0 && (
-                      <button
-                        onClick={handleStripeCheckout}
-                        disabled={checkoutLoading}
+                      <a
+                        href="https://buy.stripe.com/4gMeVdaR37Ne8NYeaZcZa01"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn-primary"
-                        style={{ marginTop: '1.25rem', opacity: checkoutLoading ? 0.6 : 1 }}
+                        style={{ marginTop: '1.25rem', display: 'inline-flex' }}
                       >
-                        {checkoutLoading ? 'Redirecting...' : 'Pay $197 — Secure Checkout →'}
-                      </button>
+                        Pay $197 — Secure Checkout →
+                      </a>
                     )}
                   </div>
                 </div>
