@@ -93,6 +93,7 @@ function AuditPageInner() {
     name: '', email: '', bizType: '', challenge: '', paid: paymentSuccess ? 'Yes' : '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   // Lead capture state
   const [leadForm, setLeadForm] = useState({ firstName: '', email: '', phone: '' })
@@ -119,8 +120,31 @@ function AuditPageInner() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormState(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
+
+    // POST audit data to Apps Script
+    try {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          bizType: formState.bizType,
+          challenge: formState.challenge,
+          paid: formState.paid,
+          source: 'audit-page',
+          timestamp: new Date().toISOString(),
+        }),
+      })
+    } catch {
+      // no-cors always throws — intended, ignore
+    }
+
+    setSubmitting(false)
     setSubmitted(true)
   }
 
