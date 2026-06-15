@@ -10,7 +10,7 @@ import Footer from '../components/Footer'
 const SITE_URL            = 'https://www.amc-professionals.com'
 const STRIPE_PAYMENT_URL  = 'https://buy.stripe.com/4gMeVdaR37Ne8NYeaZcZa01'
 const APPS_SCRIPT_URL     = 'https://script.google.com/macros/s/AKfycbxWNR6ynnhTaK4bG7X9Giuzn-IGTrGnbgFpX_EELB6AUEafb18ObuCDWQ6iuWkupksTlA/exec'
-const TEMPLATE_DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=1qbr2vP4Nh4l-M_xBUX0phal5QN3OnxG9jSHnNC7YAhE'
+const TEMPLATE_DOWNLOAD_URL = 'https://docs.google.com/document/d/1qbr2vP4Nh4l-M_xBUX0phal5QN3OnxG9jSHnNC7YAhE/export?format=pdf'
 
 // ── fbq type shim ──
 declare global {
