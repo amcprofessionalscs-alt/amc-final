@@ -9,12 +9,14 @@ import IgnitionCheckin from '@/components/os/IgnitionCheckin'
 import HabitTracker from '@/components/os/HabitTracker'
 import BrainChat from '@/components/os/BrainChat'
 import HistoryView from '@/components/os/HistoryView'
+import EventDashboard from '@/components/os/event/EventDashboard'
 import type { User } from '@supabase/supabase-js'
 
-type Tab = 'home' | 'ignition' | 'habits' | 'chat' | 'history'
+type Tab = 'home' | 'event' | 'ignition' | 'habits' | 'chat' | 'history'
 
 const NAV_ITEMS: { id: Tab; label: string; icon: string }[] = [
   { id: 'home',     label: 'Brain',    icon: '⚡' },
+  { id: 'event',    label: 'Event',    icon: '🚀' },
   { id: 'ignition', label: 'Ignition', icon: '🔥' },
   { id: 'habits',   label: 'Law of 1%',icon: '📈' },
   { id: 'chat',     label: 'Chat',     icon: '💬' },
@@ -124,6 +126,7 @@ export default function OsDashboard() {
             {/* Quick actions */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '0.5rem' }}>
               {[
+                { tab: 'event' as Tab,    label: 'Event Ops',       icon: '🚀', color: 'var(--pink)' },
                 { tab: 'ignition' as Tab, label: 'Morning Ignition', icon: '🔥', color: 'var(--amber)' },
                 { tab: 'habits' as Tab,   label: 'Habit Check',     icon: '📈', color: 'var(--cyan)' },
                 { tab: 'chat' as Tab,     label: 'Brain Chat',      icon: '💬', color: 'var(--pink)' },
@@ -157,6 +160,7 @@ export default function OsDashboard() {
             </div>
           </div>
         )}
+        {tab === 'event'    && <EventDashboard user={user} />}
         {tab === 'ignition' && <IgnitionCheckin user={user} />}
         {tab === 'habits'   && <HabitTracker user={user} />}
         {tab === 'chat'     && <BrainChat user={user} />}
