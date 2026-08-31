@@ -58,6 +58,11 @@ alter table event_contacts enable row level security;
 alter table event_touches enable row level security;
 alter table event_tasks enable row level security;
 
+drop policy if exists "own rows" on event_settings;
+drop policy if exists "own rows" on event_contacts;
+drop policy if exists "own rows" on event_touches;
+drop policy if exists "own rows" on event_tasks;
+
 create policy "own rows" on event_settings for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "own rows" on event_contacts for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "own rows" on event_touches for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
