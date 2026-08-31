@@ -12,7 +12,7 @@ const interests = [
 export default function Contact() {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
-  const [formState, setFormState] = useState({ name: "", email: "", interest: "", message: "" })
+  const [formState, setFormState] = useState({ name: "", email: "", phone: "", interest: "", message: "" })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -39,7 +39,7 @@ export default function Contact() {
       })
       if (!response.ok) throw new Error("Submission failed")
       setSubmitted(true)
-      setFormState({ name: "", email: "", interest: "", message: "" })
+      setFormState({ name: "", email: "", phone: "", interest: "", message: "" })
     } catch {
       setError("Something went wrong. Email us at amcprofessionalscs@gmail.com")
     } finally {
@@ -133,6 +133,15 @@ export default function Contact() {
                 name="email"
                 placeholder="Email Address"
                 value={formState.email}
+                onChange={handleChange}
+                required
+                className="os-input"
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={formState.phone}
                 onChange={handleChange}
                 required
                 className="os-input"

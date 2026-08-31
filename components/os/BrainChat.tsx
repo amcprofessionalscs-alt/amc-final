@@ -34,7 +34,7 @@ export default function BrainChat({ user }: Props) {
         body: JSON.stringify({ message: text, history: messages, userId: user?.id }),
       })
       const data = await res.json()
-      setMessages(prev => [...prev, { role: 'assistant', content: data.message }])
+      setMessages(prev => [...prev, { role: 'assistant', content: data.message || data.error || 'No response.' }])
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Connection error. Try again.' }])
     } finally {

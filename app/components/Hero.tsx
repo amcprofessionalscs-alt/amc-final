@@ -8,29 +8,15 @@ const driveImg = (id: string) => `https://lh3.googleusercontent.com/d/${id}`
 const HEADSHOT = driveImg('1q2DAKWhGs4W7OLwvPIhcTCtDpXnMyP1u')
 
 export default function Hero() {
-  const [loaded, setLoaded]           = useState(false)
-  const [videoReady, setVideoReady]   = useState(false)
-  const [videoError, setVideoError]   = useState(false)
-  const [prefersReduced, setPrefersReduced] = useState(false)
-  const sectionRef  = useRef<HTMLElement>(null)
-  const videoRef    = useRef<HTMLVideoElement>(null)
+  const [loaded, setLoaded] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 80])
-  const videoOp  = useTransform(scrollYProgress, [0, 0.6], [0.7, 0])
 
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefersReduced(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches)
-    mq.addEventListener('change', handler)
     setTimeout(() => setLoaded(true), 200)
-    return () => mq.removeEventListener('change', handler)
   }, [])
-
-  useEffect(() => {
-    if (prefersReduced && videoRef.current) videoRef.current.pause()
-  }, [prefersReduced])
 
   const stagger = (delay: number) => ({
     initial: { opacity: 0, y: 28 },
@@ -44,30 +30,8 @@ export default function Hero() {
       id="hero"
       style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
     >
-      {/* CSS fallback — always renders, sits below video */}
+      {/* CSS fallback — no hero video asset exists yet, this is the actual background */}
       <div className="hero-fallback" />
-
-      {/* Seedance video — renders only when available */}
-      {!videoError && !prefersReduced && (
-        <motion.video
-          ref={videoRef}
-          className="video-bg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{ opacity: videoOp }}
-          onCanPlay={() => setVideoReady(true)}
-          onError={() => setVideoError(true)}
-        >
-          <source src="/videos/hero-loop.mp4" type="video/mp4" />
-        </motion.video>
-      )}
-
-      {/* Glassmorphism overlay — on top of video */}
-      {videoReady && !videoError && !prefersReduced && (
-        <div className="video-glass-overlay" />
-      )}
 
       {/* Grid texture */}
       <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
