@@ -16,20 +16,25 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
 
-    if (error) {
-      setError(error.message)
-    } else {
-      setSent(true)
+      if (error) {
+        setError(error.message)
+      } else {
+        setSent(true)
+      }
+    } catch {
+      setError('Something went wrong sending the link. Try again.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (

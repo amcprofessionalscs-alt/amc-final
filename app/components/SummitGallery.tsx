@@ -2,17 +2,15 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 
-const driveImg = (id: string) => `https://lh3.googleusercontent.com/d/${id}`
-
 const PHOTOS = [
-  { id: "1N9KjdWKd_b_sNH6B9_JXbPKX2t-zV1bt", span: 2, tall: true },   // Nextstep1 — feature
-  { id: "13_akixPQenPopB5XMBt8okfD0Fmoqv6j", span: 1, tall: false },  // 466A7691
-  { id: "1KxVfV1BaHlA01828K03QMBmawDtd5XFF", span: 1, tall: false },  // 466A7666
-  { id: "1gEeEQ5RD1cysZxW-IlHJQawIAnuhG5er", span: 1, tall: false },  // 466A7662
-  { id: "1_eC45uQxI3uu5tXC2Bodc1Dfv6WVyTuf", span: 1, tall: false },  // 466A7644
-  { id: "10iJidtYKMXv8ang756qVj8iWXBFz9ktI", span: 1, tall: false },  // 466A7657
-  { id: "1OEfYLxHf6PLsh1zzAzoW82BF57s9TqBT", span: 1, tall: false },  // 466A7656
-  { id: "1bTu5Ii_nRFfXWNvDX768x1Jn409lwfNm", span: 1, tall: false },  // 466A7654
+  { src: "/images/summit-1.png", span: 2, tall: true },
+  { src: "/images/summit-2.jpg", span: 1, tall: false },
+  { src: "/images/summit-3.jpg", span: 1, tall: false },
+  { src: "/images/summit-4.jpg", span: 1, tall: false },
+  { src: "/images/summit-5.jpg", span: 1, tall: false },
+  { src: "/images/summit-6.jpg", span: 1, tall: false },
+  { src: "/images/summit-7.jpg", span: 1, tall: false },
+  { src: "/images/summit-8.jpg", span: 1, tall: false },
 ]
 
 export default function SummitGallery() {
@@ -61,7 +59,7 @@ export default function SummitGallery() {
         >
           {PHOTOS.map((p, i) => (
             <div
-              key={p.id}
+              key={p.src}
               style={{
                 position: "relative",
                 gridColumn: p.span === 2 ? "span 2" : "span 1",
@@ -75,11 +73,10 @@ export default function SummitGallery() {
               }}
             >
               <Image
-                src={driveImg(p.id)}
+                src={p.src}
                 alt={`Summit photo ${i + 1}`}
                 fill
                 style={{ objectFit: "cover", transition: "transform 0.5s ease" }}
-                unoptimized
                 onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
                 onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
               />

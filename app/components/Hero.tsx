@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-const driveImg = (id: string) => `https://lh3.googleusercontent.com/d/${id}`
-const HEADSHOT = driveImg('1q2DAKWhGs4W7OLwvPIhcTCtDpXnMyP1u')
+const HEADSHOT = '/images/hero-headshot.jpg'
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false)
@@ -95,7 +94,6 @@ export default function Hero() {
               alt="Demonte Williams"
               fill
               className="object-cover object-top"
-              unoptimized
             />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,15,0.7) 0%, transparent 60%)' }} />
             <div style={{ position: 'absolute', bottom: '1.25rem', left: '1.25rem' }}>
